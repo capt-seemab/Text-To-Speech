@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text2Speech</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="icon" href="./icon.svg">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&display=swap" rel="stylesheet">
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Comfortaa', cursive;
+    }
+
+    body {
+        background-color: #d6d6d6;
+        font-family: 'Comfortaa', cursive;
+    }
+
+    ::selection {
+        background-color: rgb(31, 29, 29);
+        color: #d6d6d6;
+        text-decoration: none;
+    }
+
+
+
+    #input {
+        display: block;
+        margin: 10% auto auto auto;
+        padding: auto;
+        width: 50%;
+        min-height: 70px;
+        background-color: #d6d6d6;
+        border: none;
+        border-radius: 25px;
+        background: #d6d6d6;
+        box-shadow: inset 5px 5px 9px #adadad,
+            inset -5px -5px 9px #ffffff;
+    }
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+        transition: background-color 5000s;
+    }
+
+    input[type="text"] {
+        padding: 10px 35px 10px 35px;
+        background-color: #d6d6d6;
+        font-size: 1rem;
+        color: rgba(5, 5, 5, 0.699);
+    }
+
+
+    .btn {
+        display: block;
+        margin: 65px auto 30px auto;
+        padding: 10px 35px 10px 35px;
+        width: 15%;
+        min-height: 40px;
+        border: none;
+        border-radius: 20px;
+        background: #d6d6d6;
+        color: rgb(39, 36, 36);
+        box-shadow: inset 5px 5px 9px #adadad,
+            inset -5px -5px 9px #ffffff;
+        font-size: 1rem;
+    }
+
+    .btn:focus {
+        box-shadow: 5px 5px 9px #adadad,
+            -5px -5px 9px #ffffff;
+    }
+
+    .btn:focus-within {
+        border: none;
+    }
+
+    svg {
+        height: 30px;
+        width: 30px;
+        fill: rgb(24, 24, 24);
+    }
+
+
+
+    #note {
+        display: block;
+        margin: auto;
+        width: 50%;
+        text-align: center;
+        color: rgba(39, 36, 36, 0.623);
+    }
+
+    #projectBy {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 8%;
+        width: 100vw;
+        color: #a1a1a1;
+        font-size: 18px;
+    }
+
+
+    .projectByDOT a{
+        color: #505050;
+        text-decoration: none;
+
+    }
+    .projectByDOT a:hover {
+        color: #505050;
+        cursor: crosshair;
+        cursor: pointer;
+
+    }
+
+
+
+    @media screen and (max-width: 600px) {
+
+
+        #input {
+            margin: 50% auto auto auto;
+            width: 80%;
+            min-height: 100px;
+
+        }
+
+        .btn {
+            margin: 40px auto 30px auto;
+            width: 30%;
+            text-align: center;
+            padding: 10px 35px 10px 35px;
+            min-height: 60px;
+
+        }
+
+        #note {
+            width: 80%;
+            display: block;
+            margin: auto;
+        }
+    }
+
+    @media screen and (min-width:601px) and (max-width:1200px) {
+
+        #input {
+            margin: 15% auto auto auto;
+            width: 80%;
+            min-height: 100px;
+
+        }
+
+        .btn {
+            width: 30%;
+
+        }
+    }
+</style>
+
+<body>
+
+    <input type="text" id="input" placeholder="Enter Your Text . . ." required>
+    <button type="submit" onclick="Recognize()" class="btn">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <g data-name="Layer 2">
+                <g data-name="headphones">
+                    <rect width="24" height="24" opacity="0" />
+                    <path
+                        d="M12 2A10.2 10.2 0 0 0 2 12.37V17a4 4 0 1 0 4-4 3.91 3.91 0 0 0-2 .56v-1.19A8.2 8.2 0 0 1 12 4a8.2 8.2 0 0 1 8 8.37v1.19a3.91 3.91 0 0 0-2-.56 4 4 0 1 0 4 4v-4.63A10.2 10.2 0 0 0 12 2zM6 15a2 2 0 1 1-2 2 2 2 0 0 1 2-2zm12 4a2 2 0 1 1 2-2 2 2 0 0 1-2 2z" />
+                </g>
+            </g>
+        </svg>
+    </button>
+    <div id="note"><span>Note : </span>*Type or paste your script here.</div>
+
+    <div id="projectBy">
+        <p class="projectByDOT">
+            Project by
+            <span id="dotdevelopingteam">
+                <a href="https://instagram.com/dotdevelopingteam?utm_medium=copy_link" target="_blank">
+                    dotdevelopingteam
+                </a>
+            </span>
+        </p>
+    </div>
+</body>
+
+<script>
+    function Recognize() {
+        let inputText = document.getElementById("input").value
+        let speech = new SpeechSynthesisUtterance()
+        speech.text = inputText
+        window.speechSynthesis.speak(speech)
+    }
+</script>
+
+</html>
